@@ -33,3 +33,9 @@ GitHub repository 搜索 per_page100：copula/phylogen/survey sampling/clayton/r
 MoonCakes 三个详情页成功200；statsmodels/copie文档成功200。初次猜测 tests/phylo_test.mbt 与 rake_test.mbt 返回404，随后用真实树恢复正确测试路径，未掩盖访问失败。对核心接口 FrankCopula/clayton_cdf/rosenblatt/empirical copula 做反搜。精确目标 CYang-dep/mooncopula@0.1.0 预检404。
 
 结论：截至记录日期，在以上有界检索和实际源码范围内未发现成熟维护的直接替代。不是绝对唯一性或官方裁决。实现前使用同目录排他锁、重读和原子替换完成登记。发布前需再次检索并记录结果。
+
+## 发布前反向复核（2026-11-11）
+
+实现完成后重新执行 `moon search --limit 100`：copula 返回 3 项（MonteCarlo、MoonBallot、Symbit），Archimedean 与 Rosenblatt 无直接结果，checkerboard 返回 5 项，均为绘图/计算机视觉棋盘。原有 MonteCarlo 重合边界不变。GitHub `copula language:MoonBit` 仓库搜索及 `"bootstrap_raw" language:MoonBit` 代码搜索均返回 total_count=0、incomplete_results=false；这些仍受索引覆盖限制，不据此宣称绝对无重复。共享注册表再次检索得到本项目自己的 reserved 项与对应 external-checked 项，未出现新的同工作流冲突。
+
+精确 GitHub 目标仓库及 MoonCakes 0.1.0 manifest 重新直查均返回 HTTP 404；两端隔离凭据服务端复验均为 CYang-dep。研究中的相邻包实际源码、测试与接口比较继续作为主要差异依据。当前实现兑现了定义的三条用户链路，新增诊断/重采样/校准均服务于拟合结果解释与联合事件评估，没有改成其它已预留项目的工作流。原始去秘密证据留本地验收目录；公开文档不含私人申报资料。
