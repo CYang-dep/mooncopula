@@ -1,0 +1,273 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "CYang-dep/mooncopula"
+
+import {
+  "moonbitlang/core/debug",
+}
+
+// Values
+pub fn bootstrap_raw(Family, Array[Pair], Array[Array[Int32]], Pair, rotation? : Rotation, options? : FitOptions, coverage? : Double) -> BootstrapResult raise CopulaError
+
+pub fn checked_probability(Double) -> Double raise CopulaError
+
+pub fn checkerboard_cdf(Array[Pair], Double, Double) -> Double raise CopulaError
+
+pub fn compare_models(Array[Candidate], Array[Pair]) -> Array[RankedModel] raise CopulaError
+
+pub fn concordance(Array[Pair]) -> Concordance raise CopulaError
+
+pub fn default_fit_options(Family) -> FitOptions
+
+pub fn empirical_tails(Array[Pair], Double) -> TailDiagnostic raise CopulaError
+
+pub fn fit(Family, Array[Pair], rotation? : Rotation, options? : FitOptions) -> FitResult raise CopulaError
+
+pub fn fit_raw(Family, Array[Pair], rotation? : Rotation) -> FitResult raise CopulaError
+
+pub fn independence() -> Copula
+
+pub fn probability_grid(Int32) -> Array[Pair] raise CopulaError
+
+pub fn pseudo_observations(Array[Pair], policy? : TiePolicy) -> Array[Pair] raise CopulaError
+
+pub fn ranks(Array[Double], policy? : TiePolicy) -> Array[Double] raise CopulaError
+
+pub fn resample_pairs(Array[Pair], Array[Int32]) -> Array[Pair] raise CopulaError
+
+pub fn restore_margins(Array[Pair], EmpiricalMargin, EmpiricalMargin) -> Array[Pair] raise CopulaError
+
+pub fn return_period(Double, Double) -> Double? raise CopulaError
+
+pub fn sample_summary(Array[Double], coverage? : Double) -> SampleSummary raise CopulaError
+
+pub fn spearman(Array[Pair]) -> Double raise CopulaError
+
+pub fn standard_candidates() -> Array[Candidate]
+
+pub fn tie_counts(Array[Pair]) -> (Int32, Int32) raise CopulaError
+
+pub fn uniform_diagnostic(Array[Double]) -> UniformDiagnostic raise CopulaError
+
+pub fn validate_uniforms(Array[Pair], Int32) -> Unit raise CopulaError
+
+pub fn wilson_interval(Int32, Int32, z? : Double) -> RateInterval raise CopulaError
+
+// Errors
+pub(all) suberror CopulaError {
+  InvalidInput(String)
+  BudgetExceeded(String)
+  NumericalFailure(String)
+} derive(@debug.Debug)
+pub fn CopulaError::to_repr(Self) -> @debug.Repr
+
+// Types and methods
+pub struct BootstrapReplicate {
+  model : Copula
+  log_likelihood : Double
+  at_boundary : Bool
+  upper_joint_probability : Double
+}
+
+pub struct BootstrapResult {
+  replicates : Array[BootstrapReplicate]
+  theta : SampleSummary
+  upper_joint_probability : SampleSummary
+  boundary_fits : Int32
+}
+
+pub struct CalibrationPoint {
+  threshold : Pair
+  forecast : Double
+  observed : RateInterval
+  residual : Double
+}
+
+pub(all) struct Candidate {
+  label : String
+  family : Family
+  rotation : Rotation
+  options : FitOptions
+}
+
+pub struct Concordance {
+  concordant : Int32
+  discordant : Int32
+  x_only_ties : Int32
+  y_only_ties : Int32
+  both_ties : Int32
+  tau_b : Double
+} derive(@debug.Debug)
+pub fn Concordance::to_repr(Self) -> @debug.Repr
+
+pub struct Copula {
+  family : Family
+  theta : Double
+  rotation : Rotation
+} derive(@debug.Debug)
+pub fn Copula::calibration_curve(Self, Array[Pair], Array[Pair], ThresholdEvent, z? : Double) -> Array[CalibrationPoint] raise CopulaError
+pub fn Copula::cdf(Self, Double, Double) -> Double raise CopulaError
+pub fn Copula::conditional(Self, Double, Double) -> Double raise CopulaError
+pub fn Copula::conditional_exceedance(Self, Double, Double) -> Double raise CopulaError
+pub fn Copula::density(Self, Double, Double) -> Double raise CopulaError
+pub fn Copula::grid_diagnostic(Self, Array[Pair], Array[Pair]) -> GridDiagnostic raise CopulaError
+pub fn Copula::inverse_conditional(Self, Double, Double, tolerance? : Double, max_iterations? : Int32) -> Inversion raise CopulaError
+pub fn Copula::log_density(Self, Double, Double) -> Double raise CopulaError
+pub fn Copula::log_likelihood(Self, Array[Pair]) -> Double raise CopulaError
+pub fn Copula::new(Family, Double, rotation? : Rotation) -> Self raise CopulaError
+pub fn Copula::rectangle(Self, Double, Double, Double, Double) -> Double raise CopulaError
+pub fn Copula::residual_diagnostic(Self, Array[Pair]) -> RosenblattDiagnostic raise CopulaError
+pub fn Copula::risk(Self, Double, Double) -> JointRisk raise CopulaError
+pub fn Copula::rosenblatt(Self, Array[Pair]) -> Array[Pair] raise CopulaError
+pub fn Copula::scenarios(Self, Array[Pair], Array[Pair]) -> Array[Pair] raise CopulaError
+pub fn Copula::simulate(Self, Array[Pair]) -> Array[Pair] raise CopulaError
+pub fn Copula::tail_coefficients(Self) -> (Double, Double)
+pub fn Copula::to_repr(Self) -> @debug.Repr
+
+pub struct EmpiricalCopula {
+  // private fields
+}
+pub fn EmpiricalCopula::cdf(Self, Double, Double) -> Double raise CopulaError
+pub fn EmpiricalCopula::from_raw(Array[Pair], policy? : TiePolicy) -> Self raise CopulaError
+pub fn EmpiricalCopula::new(Array[Pair]) -> Self raise CopulaError
+pub fn EmpiricalCopula::observations(Self) -> Array[Pair]
+pub fn EmpiricalCopula::rectangle(Self, Double, Double, Double, Double) -> Double raise CopulaError
+pub fn EmpiricalCopula::size(Self) -> Int32
+
+pub struct EmpiricalMargin {
+  // private fields
+}
+pub fn EmpiricalMargin::cdf(Self, Double) -> Double raise CopulaError
+pub fn EmpiricalMargin::linear_quantile(Self, Double) -> Double raise CopulaError
+pub fn EmpiricalMargin::new(Array[Double]) -> Self raise CopulaError
+pub fn EmpiricalMargin::quantile(Self, Double) -> Double raise CopulaError
+pub fn EmpiricalMargin::size(Self) -> Int32
+
+pub(all) enum Family {
+  Independence
+  Clayton
+  Gumbel
+  Frank
+} derive(@debug.Debug)
+pub fn Family::to_repr(Self) -> @debug.Repr
+
+pub(all) struct FitOptions {
+  lower : Double
+  upper : Double
+  tolerance : Double
+  iterations : Int32
+}
+
+pub struct FitResult {
+  model : Copula
+  log_likelihood : Double
+  aic : Double
+  bic : Double
+  observations : Int32
+  evaluations : Int32
+  converged : Bool
+  at_boundary : Bool
+}
+
+pub struct GridDiagnostic {
+  points : Int32
+  maximum_absolute : Double
+  root_mean_square : Double
+  sample_scaled_mean_square : Double
+}
+
+pub struct Inversion {
+  value : Double
+  residual : Double
+  iterations : Int32
+} derive(@debug.Debug)
+pub fn Inversion::to_repr(Self) -> @debug.Repr
+
+pub struct JointRisk {
+  lower_both : Double
+  upper_both : Double
+  upper_either : Double
+  x_above_y_below : Double
+  x_below_y_above : Double
+} derive(@debug.Debug)
+pub fn JointRisk::to_repr(Self) -> @debug.Repr
+
+pub(all) struct Pair {
+  x : Double
+  y : Double
+} derive(@debug.Debug)
+pub fn Pair::to_repr(Self) -> @debug.Repr
+
+pub struct RankedModel {
+  label : String
+  fit : FitResult
+  delta_aic : Double
+  weight : Double
+}
+
+pub struct RateInterval {
+  successes : Int32
+  trials : Int32
+  observed : Double
+  lower : Double
+  upper : Double
+}
+
+pub struct RosenblattDiagnostic {
+  first : UniformDiagnostic
+  second : UniformDiagnostic
+  residual_spearman : Double
+}
+
+pub(all) enum Rotation {
+  R0
+  R90
+  R180
+  R270
+} derive(@debug.Debug)
+pub fn Rotation::to_repr(Self) -> @debug.Repr
+
+pub struct SampleSummary {
+  count : Int32
+  mean : Double
+  standard_deviation : Double
+  lower : Double
+  median : Double
+  upper : Double
+}
+
+pub struct TailDiagnostic {
+  threshold : Double
+  lower_joint : Double
+  upper_joint : Double
+  lower_coefficient : Double
+  upper_coefficient : Double
+  observations : Int32
+} derive(@debug.Debug)
+pub fn TailDiagnostic::to_repr(Self) -> @debug.Repr
+
+pub(all) enum ThresholdEvent {
+  LowerBoth
+  UpperBoth
+  UpperEither
+  FirstUpperSecondLower
+  FirstLowerSecondUpper
+}
+
+pub(all) enum TiePolicy {
+  Midrank
+  Ordinal
+  RejectTies
+} derive(@debug.Debug)
+pub fn TiePolicy::to_repr(Self) -> @debug.Repr
+
+pub struct UniformDiagnostic {
+  count : Int32
+  mean : Double
+  variance : Double
+  ks_distance : Double
+  cramer_von_mises : Double
+}
+
+// Type aliases
+
+// Traits
