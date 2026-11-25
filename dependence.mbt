@@ -1,5 +1,6 @@
 ///|
 /// Exact finite-sample concordance counts, including coordinate-specific ties.
+#derive(Debug)
 pub struct Concordance {
   concordant : Int32
   discordant : Int32
@@ -7,7 +8,7 @@ pub struct Concordance {
   y_only_ties : Int32
   both_ties : Int32
   tau_b : Double
-} derive(Debug)
+}
 
 ///|
 pub extend Concordance with @debug.Debug::{to_repr}
@@ -84,6 +85,7 @@ pub fn spearman(data : Array[Pair]) -> Double raise CopulaError {
 
 ///|
 /// Finite-threshold tail probabilities, not asymptotic tail estimates.
+#derive(Debug)
 pub struct TailDiagnostic {
   threshold : Double
   lower_joint : Double
@@ -91,7 +93,7 @@ pub struct TailDiagnostic {
   lower_coefficient : Double
   upper_coefficient : Double
   observations : Int32
-} derive(Debug)
+}
 
 ///|
 pub extend TailDiagnostic with @debug.Debug::{to_repr}

@@ -1,12 +1,13 @@
 ///|
 /// Joint event decomposition for uniform thresholds, evaluated in one model.
+#derive(Debug)
 pub struct JointRisk {
   lower_both : Double
   upper_both : Double
   upper_either : Double
   x_above_y_below : Double
   x_below_y_above : Double
-} derive(Debug)
+}
 
 ///|
 pub extend JointRisk with @debug.Debug::{to_repr}

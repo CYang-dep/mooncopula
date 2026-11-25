@@ -1,6 +1,6 @@
 # MoonCopula（月依存）
 
-纯 MoonBit 的二维 Archimedean Copula 建模库：把配对观测转换为秩分布，拟合并比较依赖模型，计算联合事件概率，再将条件场景还原为原始量纲。版本 `0.1.0`，模块 `CYang-dep/mooncopula`，MIT 许可证。
+纯 MoonBit 的二维 Archimedean Copula 建模库：把配对观测转换为秩分布，拟合并比较依赖模型，计算联合事件概率，再将条件场景还原为原始量纲。版本 `0.1.1`，模块 `CYang-dep/mooncopula`，MIT 许可证。
 
 它面向需要联合超越概率的环境分析者、需要相关寿命场景的可靠性工程开发者，以及需要可解释模型比较的风险工具开发者。三个完整、固定输入的示例见下文；合成数据仅用于展示计算流程。
 
@@ -21,14 +21,14 @@
 
 ## 环境和安装
 
-固定验证工具链：`moonc v0.10.18+6c83a7f62`，`moon 0.1.20261028 (e1e1f15)`，高于验收要求的 0.10.16。使用官方 MoonBit 工具链；JS 运行需要 Node.js。支持 `wasm-gc`、`wasm`、`js` 以及 Linux `native`，CI 针对四个后端分别执行检查、构建、测试和全部示例。Windows native 需要另外安装 MSVC C++ 工具和 Windows SDK；本机缺少这些组件，未声称在 Windows 上运行 native。
+固定验证工具链：`moonc v0.10.22+124d61d05`，`moon 0.1.20261119 (738607b)`，高于验收要求的 0.10.16。0.1.1 使用新版 #derive 属性语法，请使用上述验证工具链；不再承诺兼容 0.10.18。使用官方 MoonBit 工具链；JS 运行需要 Node.js。支持 `wasm-gc`、`wasm`、`js` 以及 Linux `native`，CI 针对四个后端分别执行检查、构建、测试和全部示例。Windows native 需要另外安装 MSVC C++ 工具和 Windows SDK；本机缺少这些组件，未声称在 Windows 上运行 native。
 
 在一个新的目录创建消费者，显式指定自己的模块身份：
 
 ```sh
 moon new copula-consumer --user guest --name copula-consumer
 cd copula-consumer
-moon add CYang-dep/mooncopula@0.1.0
+moon add CYang-dep/mooncopula@0.1.1
 ```
 
 在 `cmd/main/moon.pkg` 中导入库：
@@ -62,7 +62,7 @@ fn main raise {
 ```sh
 git clone https://github.com/CYang-dep/mooncopula.git
 cd mooncopula
-git checkout v0.1.0
+git checkout v0.1.1
 moon run examples/environment
 moon run examples/reliability
 moon run examples/risk

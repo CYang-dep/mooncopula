@@ -53,11 +53,12 @@ pub fn validate_uniforms(Array[Pair], Int32) -> Unit raise CopulaError
 pub fn wilson_interval(Int32, Int32, z? : Double) -> RateInterval raise CopulaError
 
 // Errors
+#derive(@debug.Debug)
 pub(all) suberror CopulaError {
   InvalidInput(String)
   BudgetExceeded(String)
   NumericalFailure(String)
-} derive(@debug.Debug)
+}
 pub fn CopulaError::to_repr(Self) -> @debug.Repr
 
 // Types and methods
@@ -89,6 +90,7 @@ pub(all) struct Candidate {
   options : FitOptions
 }
 
+#derive(@debug.Debug)
 pub struct Concordance {
   concordant : Int32
   discordant : Int32
@@ -96,14 +98,15 @@ pub struct Concordance {
   y_only_ties : Int32
   both_ties : Int32
   tau_b : Double
-} derive(@debug.Debug)
+}
 pub fn Concordance::to_repr(Self) -> @debug.Repr
 
+#derive(@debug.Debug)
 pub struct Copula {
   family : Family
   theta : Double
   rotation : Rotation
-} derive(@debug.Debug)
+}
 pub fn Copula::calibration_curve(Self, Array[Pair], Array[Pair], ThresholdEvent, z? : Double) -> Array[CalibrationPoint] raise CopulaError
 pub fn Copula::cdf(Self, Double, Double) -> Double raise CopulaError
 pub fn Copula::conditional(Self, Double, Double) -> Double raise CopulaError
@@ -142,12 +145,13 @@ pub fn EmpiricalMargin::new(Array[Double]) -> Self raise CopulaError
 pub fn EmpiricalMargin::quantile(Self, Double) -> Double raise CopulaError
 pub fn EmpiricalMargin::size(Self) -> Int32
 
+#derive(@debug.Debug)
 pub(all) enum Family {
   Independence
   Clayton
   Gumbel
   Frank
-} derive(@debug.Debug)
+}
 pub fn Family::to_repr(Self) -> @debug.Repr
 
 pub(all) struct FitOptions {
@@ -175,26 +179,29 @@ pub struct GridDiagnostic {
   sample_scaled_mean_square : Double
 }
 
+#derive(@debug.Debug)
 pub struct Inversion {
   value : Double
   residual : Double
   iterations : Int32
-} derive(@debug.Debug)
+}
 pub fn Inversion::to_repr(Self) -> @debug.Repr
 
+#derive(@debug.Debug)
 pub struct JointRisk {
   lower_both : Double
   upper_both : Double
   upper_either : Double
   x_above_y_below : Double
   x_below_y_above : Double
-} derive(@debug.Debug)
+}
 pub fn JointRisk::to_repr(Self) -> @debug.Repr
 
+#derive(@debug.Debug)
 pub(all) struct Pair {
   x : Double
   y : Double
-} derive(@debug.Debug)
+}
 pub fn Pair::to_repr(Self) -> @debug.Repr
 
 pub struct RankedModel {
@@ -218,12 +225,13 @@ pub struct RosenblattDiagnostic {
   residual_spearman : Double
 }
 
+#derive(@debug.Debug)
 pub(all) enum Rotation {
   R0
   R90
   R180
   R270
-} derive(@debug.Debug)
+}
 pub fn Rotation::to_repr(Self) -> @debug.Repr
 
 pub struct SampleSummary {
@@ -235,6 +243,7 @@ pub struct SampleSummary {
   upper : Double
 }
 
+#derive(@debug.Debug)
 pub struct TailDiagnostic {
   threshold : Double
   lower_joint : Double
@@ -242,7 +251,7 @@ pub struct TailDiagnostic {
   lower_coefficient : Double
   upper_coefficient : Double
   observations : Int32
-} derive(@debug.Debug)
+}
 pub fn TailDiagnostic::to_repr(Self) -> @debug.Repr
 
 pub(all) enum ThresholdEvent {
@@ -253,11 +262,12 @@ pub(all) enum ThresholdEvent {
   FirstLowerSecondUpper
 }
 
+#derive(@debug.Debug)
 pub(all) enum TiePolicy {
   Midrank
   Ordinal
   RejectTies
-} derive(@debug.Debug)
+}
 pub fn TiePolicy::to_repr(Self) -> @debug.Repr
 
 pub struct UniformDiagnostic {

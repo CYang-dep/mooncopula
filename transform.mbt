@@ -1,10 +1,11 @@
 ///|
 /// Bounded inversion result exposes numerical residual instead of claiming exactness.
+#derive(Debug)
 pub struct Inversion {
   value : Double
   residual : Double
   iterations : Int32
-} derive(Debug)
+}
 
 ///|
 pub extend Inversion with @debug.Debug::{to_repr}

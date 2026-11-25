@@ -1,10 +1,11 @@
 ///|
 /// Midrank policy keeps ties equal; Ordinal is stable input-order tie breaking.
+#derive(Debug)
 pub(all) enum TiePolicy {
   Midrank
   Ordinal
   RejectTies
-} derive(Debug)
+}
 
 ///|
 pub extend TiePolicy with @debug.Debug::{to_repr}

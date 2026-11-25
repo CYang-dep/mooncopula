@@ -1,43 +1,48 @@
 ///|
 /// Explicit failures; numerical singularities are not silently clipped.
+#derive(Debug)
 pub(all) suberror CopulaError {
   InvalidInput(String)
   BudgetExceeded(String)
   NumericalFailure(String)
-} derive(Debug)
+}
 
 ///|
 /// Supported bivariate analytic families.
+#derive(Debug)
 pub(all) enum Family {
   Independence
   Clayton
   Gumbel
   Frank
-} derive(Debug)
+}
 
 ///|
 /// Rotation of a base copula on the unit square.
+#derive(Debug)
 pub(all) enum Rotation {
   R0
   R90
   R180
   R270
-} derive(Debug)
+}
 
 ///|
 /// Construction validates parameters. Fields cannot be changed by consumers.
+#derive(Debug)
 pub struct Copula {
   family : Family
   theta : Double
   rotation : Rotation
-} derive(Debug)
+}
 
 ///|
 /// Owned pair of finite observations. Validation is performed by operations.
+#derive(Debug)
 pub(all) struct Pair {
   x : Double
   y : Double
-} derive(Debug)
+}
 
 ///|
 fn finite(x : Double, label : String) -> Unit raise CopulaError {
