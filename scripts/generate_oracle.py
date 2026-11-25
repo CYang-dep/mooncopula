@@ -14,7 +14,9 @@ def number(x):
     value = float(x)
     if not np.isfinite(value):
         raise ValueError(f"nonfinite reference {x}")
-    text = repr(value)
+    # Normalize platform-level libm/SciPy rounding below the precision
+    # meaningful to the independent assertions.
+    text = format(value, '.14g')
     if 'e' in text and '.' not in text.split('e')[0]:
         text = text.replace('e', '.0e')
     return text
