@@ -71,8 +71,12 @@ if __name__=='__main__':
     path=ROOT/'oracle_wbtest.mbt'; result=generate()
     if args.check:
         # moon fmt may wrap lines: compare whitespace-insensitively.
-        if ''.join(path.read_text(encoding='utf-8').replace(',', '').split()) != ''.join(result.replace(',', '').split()):
-            raise SystemExit('oracle fixture drift; regenerate then moon fmt')
+        checked = ''.join(path.read_text(encoding='utf-8').replace(',', '').split())
+        generated = ''.join(result.replace(',', '').split())
+        if checked != generated:
+            mismatch = next((i for i, pair in enumerate(zip(checked, generated)) if pair[0] != pair[1]), min(len(checked), len(generated)))
+            start, end = max(0, mismatch - 80), mismatch + 160
+            raise SystemExit(f'oracle fixture drift at normalized offset {mismatch}; committed={checked[start:end]!r}; generated={generated[start:end]!r}; lengths={len(checked)}/{len(generated)}')
         print('independent oracle fixture verified')
     else:
         path.write_text(result, encoding='utf-8')
