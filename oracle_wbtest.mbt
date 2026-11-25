@@ -344,6 +344,6 @@ test "pseudo likelihood matches SciPy optimized statsmodels density" {
     { x: 0.6704167949557152, y: 0.6179144097039989, },
   ]
   let result = fit(Clayton, data)
-  close(result.model.theta, 2.060415640026638, 2.0e-5)
-  close(result.log_likelihood, 35.91684815176322, 1.0e-8)
+  close(result.model.theta, 2.060416, 2.0e-5)
+  close(result.log_likelihood, 35.91684815, 1.0e-8)
 }

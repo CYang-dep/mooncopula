@@ -59,7 +59,11 @@ def generate():
     result=minimize_scalar(lambda t: -float(ClaytonCopula(t).logpdf(data).sum()), bounds=(.01,30), method='bounded', options={'xatol':1e-9})
     lines+=['///|','test "pseudo likelihood matches SciPy optimized statsmodels density" {','  let data = [']
     lines += [f'    {{x: {number(a)}, y: {number(b)}}},' for a,b in data]
-    lines += ['  ]','  let result = fit(Clayton, data)',f'  close(result.model.theta, {number(result.x)}, 2.0e-5)',f'  close(result.log_likelihood, {number(-result.fun)}, 1.0e-8)','}']
+    # SciPy's bounded optimizer can vary in the last few bits across platforms.
+    # Canonicalize only these optimized references well inside the test tolerances.
+    theta_reference = float(f'{result.x:.6f}')
+    likelihood_reference = float(f'{-result.fun:.8f}')
+    lines += ['  ]','  let result = fit(Clayton, data)',f'  close(result.model.theta, {number(theta_reference)}, 2.0e-5)',f'  close(result.log_likelihood, {number(likelihood_reference)}, 1.0e-8)','}']
     return '\n'.join(lines)+'\n'
 
 if __name__=='__main__':
