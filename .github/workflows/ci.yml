@@ -29,8 +29,11 @@ jobs:
           chmod +x "$MOON_HOME"/bin/* "$MOON_HOME/bin/internal/tcc"
           export PATH="$MOON_HOME/bin:$PATH"
           echo "$MOON_HOME/bin" >> "$GITHUB_PATH"
-          moon version --all
-          moonc -v | grep -F 'v0.10.22+124d61d05'
+          toolchain_version="$(moon version --all)"
+          printf '%s\n' "$toolchain_version"
+          printf '%s\n' "$toolchain_version" | grep -Eq '^moon 0\.1\.20261119 \('
+          printf '%s\n' "$toolchain_version" | grep -Eq '^moonc v0\.10\.22\+124d61d05 \('
+          printf '%s\n' "$toolchain_version" | grep -Eq '^moonrun 0\.1\.20261119 \('
           moon -C "$MOON_HOME/lib/core" bundle --warn-list -a --all
       - name: Check interface and formatting drift
         run: |
