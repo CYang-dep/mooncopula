@@ -39,3 +39,11 @@ MoonCakes 三个详情页成功200；statsmodels/copie文档成功200。初次�
 实现完成后重新执行 `moon search --limit 100`：copula 返回 3 项（MonteCarlo、MoonBallot、Symbit），Archimedean 与 Rosenblatt 无直接结果，checkerboard 返回 5 项，均为绘图/计算机视觉棋盘。原有 MonteCarlo 重合边界不变。GitHub `copula language:MoonBit` 仓库搜索及 `"bootstrap_raw" language:MoonBit` 代码搜索均返回 total_count=0、incomplete_results=false；这些仍受索引覆盖限制，不据此宣称绝对无重复。共享注册表再次检索得到本项目自己的 reserved 项与对应 external-checked 项，未出现新的同工作流冲突。
 
 精确 GitHub 目标仓库及 MoonCakes 0.1.0 manifest 重新直查均返回 HTTP 404；两端隔离凭据服务端复验均为 CYang-dep。研究中的相邻包实际源码、测试与接口比较继续作为主要差异依据。当前实现兑现了定义的三条用户链路，新增诊断/重采样/校准均服务于拟合结果解释与联合事件评估，没有改成其它已预留项目的工作流。原始去秘密证据留本地验收目录；公开文档不含私人申报资料。
+
+## REVIEW 发布前复核（2026-11-27）
+
+重新执行 `moon search <keyword> --limit 100`，关键词为 copula、Archimedean、Clayton、Gumbel、Frank、Rosenblatt、checkerboard、joint risk；分别返回 4、2、1、4、6、1、5、4 个包。Archimedean 额外命中的 HOL Light 为实数定理证明接口，Gumbel 水印与棋盘绘图等命中不构成同工作流。GitHub `copula language:MoonBit` 仓库搜索返回本项目 1 项，`incomplete_results=false`，仍有索引限制。
+
+经 GitHub contents API 重新读取 MonteCarlo 的 `lib/multi_asset/copula.mbt`、测试与公开接口：核心为 Cholesky 相关 Gaussian/t 随机向量及 MultiAssetGBM 路径，不提供本项目的二维 Archimedean CDF/条件分布、秩拟合、模型比较和联合事件诊断闭环。比较用途、输入、模型、输出及接入方式后，仍属于同方向不同核心任务；未复制源码。原 raw 域名请求连接重置，已由 contents API 取得相同实际文件，不将访问失败当作零重合。
+
+共享注册表读取当前全部状态并复核匹配指纹，保留本项目已登记范围与相邻条目，未发现新的成熟直接替代。结论仅限此次有界检索、已读源码和注册表，不是绝对唯一或官方查重通过。原三问题域候选决策与历史记录不变；本次不重新选题、不改名包装。

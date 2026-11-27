@@ -11,19 +11,26 @@ jobs:
       fail-fast: false
       matrix:
         target: [wasm-gc, wasm, js, native]
+        toolchain:
+          - compiler: 1.0.0-rc1+3c0520448
+            encoded: 1.0.0-rc1%2B3c0520448
+            cli: 0.1.20261126
+          - compiler: 0.10.22+124d61d05
+            encoded: 0.10.22%2B124d61d05
+            cli: 0.1.20261119
     steps:
       - uses: actions/checkout@v4
       - name: Install pinned official MoonBit toolchain
         shell: bash
         run: |
           set -euo pipefail
-          export MOON_HOME="$RUNNER_TEMP/moonbit-0.10.22"
+          export MOON_HOME="$RUNNER_TEMP/moonbit-${{ matrix.toolchain.compiler }}"
           export MOON_TOOLCHAIN_ROOT="$MOON_HOME"
           echo "MOON_HOME=$MOON_HOME" >> "$GITHUB_ENV"
           echo "MOON_TOOLCHAIN_ROOT=$MOON_TOOLCHAIN_ROOT" >> "$GITHUB_ENV"
           mkdir -p "$MOON_HOME/lib"
-          curl --fail --location --retry 3 'https://cli.moonbitlang.com/binaries/0.10.22%2B124d61d05/moonbit-linux-x86_64.tar.gz' -o "$RUNNER_TEMP/moonbit.tar.gz"
-          curl --fail --location --retry 3 'https://cli.moonbitlang.com/cores/core-0.10.22%2B124d61d05.tar.gz' -o "$RUNNER_TEMP/core.tar.gz"
+          curl --fail --location --retry 3 'https://cli.moonbitlang.com/binaries/${{ matrix.toolchain.encoded }}/moonbit-linux-x86_64.tar.gz' -o "$RUNNER_TEMP/moonbit.tar.gz"
+          curl --fail --location --retry 3 'https://cli.moonbitlang.com/cores/core-${{ matrix.toolchain.encoded }}.tar.gz' -o "$RUNNER_TEMP/core.tar.gz"
           tar xf "$RUNNER_TEMP/moonbit.tar.gz" -C "$MOON_HOME"
           tar xf "$RUNNER_TEMP/core.tar.gz" -C "$MOON_HOME/lib"
           chmod +x "$MOON_HOME"/bin/* "$MOON_HOME/bin/internal/tcc"
@@ -31,9 +38,9 @@ jobs:
           echo "$MOON_HOME/bin" >> "$GITHUB_PATH"
           toolchain_version="$(moon version --all)"
           printf '%s\n' "$toolchain_version"
-          printf '%s\n' "$toolchain_version" | grep -Eq '^moon 0\.1\.20261119 \('
-          printf '%s\n' "$toolchain_version" | grep -Eq '^moonc v0\.10\.22\+124d61d05 \('
-          printf '%s\n' "$toolchain_version" | grep -Eq '^moonrun 0\.1\.20261119 \('
+          printf '%s\n' "$toolchain_version" | grep -F 'moon ${{ matrix.toolchain.cli }} ('
+          printf '%s\n' "$toolchain_version" | grep -F 'moonc v${{ matrix.toolchain.compiler }} ('
+          printf '%s\n' "$toolchain_version" | grep -F 'moonrun ${{ matrix.toolchain.cli }} ('
           moon -C "$MOON_HOME/lib/core" bundle --warn-list -a --all
       - name: Check interface and formatting drift
         run: |
@@ -59,3 +66,4 @@ jobs:
         run: |
           python -m pip install -r scripts/oracle-requirements.txt
           python scripts/generate_oracle.py --check
+          python scripts/audit_source.py
