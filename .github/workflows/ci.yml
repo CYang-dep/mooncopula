@@ -65,5 +65,6 @@ jobs:
         if: matrix.target == 'wasm-gc'
         run: |
           python -m pip install -r scripts/oracle-requirements.txt
+          python -m unittest discover -s scripts -p test_oracle_check.py
           python scripts/generate_oracle.py --check
           python scripts/audit_source.py

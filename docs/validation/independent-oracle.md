@@ -13,3 +13,8 @@
 - https://docs.python.org/3/library/decimal.html
 
 数学公式原创实现；没有移植上述软件源码。固定合成数据由本项目脚本创建，无第三方真实个人数据。参考通过不代表任意极端输入均有相同误差保证；公开 API 在数值失败时返回明确异常，未返回伪造的收敛结果。向量容差按具体量设置，CDF 绝对误差 2e-9、log-density/Frank conditional 2e-8；不将这些测试范围外推为全域定理。
+
+
+### 跨平台复现检查
+
+`generate_oracle.py --check` 对调用结构、样本输入和断言容差保持严格一致，仅外部计算的参考结果允许 `rel_tol=1e-13`、`abs_tol=2e-15` 的末位舍入预算。该预算远小于对应数学断言的容差，不改变 MoonBit 数值用例；避免不同平台 libm 的末位差异被误判为向量漂移。`python -m unittest discover -s scripts -p test_oracle_check.py` 验证舍入接受、真实结果漂移、输入、容差、函数或样本篡改及缺失断言拒绝。

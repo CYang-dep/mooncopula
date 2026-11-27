@@ -2,6 +2,8 @@
 Run with Python 3.12 and scripts/oracle-requirements.txt. No production dependency.
 """
 import argparse
+import math
+import re
 from pathlib import Path
 import numpy as np
 from scipy.stats import rankdata, kendalltau, spearmanr, kstest, cramervonmises
@@ -68,19 +70,43 @@ def generate():
     lines += ['  ]','  let result = fit(Clayton, data)',f'  close(result.model.theta, {number(theta_reference)}, 2.0e-5)',f'  close(result.log_likelihood, {number(likelihood_reference)}, 1.0e-8)','}']
     return '\n'.join(lines)+'\n'
 
+def fixture_equivalent(committed, generated):
+    """Keep source/inputs/tolerances exact; tolerate only reference-value libm noise.
+
+    The 1e-13 relative / 2e-15 absolute budget is much tighter than the
+    numerical model assertions. It never applies to their tolerances or inputs.
+    """
+    numeric = r"-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?"
+    expected = re.compile(r",(" + numeric + r"),(" + numeric + r")\)")
+
+    def canonical(text):
+        # moon fmt changes layout and can add trailing argument/array commas.
+        text = re.sub(r"//[^\n]*", "", text)
+        text = "".join(text.split())
+        text = re.sub(r",(?=[)\]}])", "", text)
+        values = []
+
+        def reference(match):
+            values.append(float(match.group(1)))
+            return ",<reference>," + match.group(2) + ")"
+
+        return expected.sub(reference, text), values
+
+    old_shape, old_values = canonical(committed)
+    new_shape, new_values = canonical(generated)
+    if old_shape != new_shape or not old_values or len(old_values) != len(new_values):
+        return False
+    return all(math.isfinite(a) and math.isfinite(b) and
+               math.isclose(a, b, rel_tol=1e-13, abs_tol=2e-15)
+               for a, b in zip(old_values, new_values))
+
+
 if __name__=='__main__':
     parser=argparse.ArgumentParser(); parser.add_argument('--check',action='store_true'); args=parser.parse_args()
     path=ROOT/'oracle_wbtest.mbt'; result=generate()
     if args.check:
-        # moon fmt may wrap lines: compare whitespace-insensitively.
-        checked = ''.join(path.read_text(encoding='utf-8').replace(',', '').split())
-        generated = ''.join(result.replace(',', '').split())
-        if checked != generated:
-            mismatch = next((i for i, pair in enumerate(zip(checked, generated)) if pair[0] != pair[1]), min(len(checked), len(generated)))
-            start, end = max(0, mismatch - 80), mismatch + 160
-            raise SystemExit(f'oracle fixture drift at normalized offset {mismatch}; committed={checked[start:end]!r}; generated={generated[start:end]!r}; lengths={len(checked)}/{len(generated)}')
-        print('independent oracle fixture verified')
+        if not fixture_equivalent(path.read_text(encoding='utf-8'), result):
+            raise SystemExit('oracle fixture drift: source, inputs, tolerances or reference values differ beyond the platform rounding budget')
+        print('independent oracle fixture verified (structure exact; reference-only rounding budget)')
     else:
         path.write_text(result, encoding='utf-8')
-
-
